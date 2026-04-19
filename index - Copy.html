@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>BPIT University Management System</title>
+    <style>
+      body {
+        font-family: "times new roman", serif;
+        display: flex;
+        margin: 0;
+        background: #f0f2f5;
+      }
+      .sidebar {
+        width: 240px;
+        background: #2c3e50;
+        color: white;
+        height: 100vh;
+        padding: 20px;
+        position: fixed;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      /* Updated Logo Styling */
+      .logo-img {
+        width: 160px;
+        margin-bottom: 25px;
+        border-radius: 4px;
+        background: white;
+        padding: 10px;
+      }
+
+      .main {
+        margin-left: 280px;
+        padding: 30px;
+        width: calc(100% - 280px);
+      }
+      .card {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 25px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+      }
+      th,
+      td {
+        padding: 12px;
+        border: 1px solid #dee2e6;
+        text-align: left;
+      }
+      th {
+        background: #3498db;
+        color: white;
+      }
+      .nav-btn {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        margin: 8px 0;
+        background: none;
+        border: none;
+        color: #bdc3c7;
+        text-align: left;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: 0.3s;
+      }
+      .nav-btn:hover,
+      .active {
+        background: #34495e;
+        color: white;
+        border-left: 5px solid #3498db;
+      }
+      .btn-add {
+        background: #2ecc71;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 4px;
+      }
+      .btn-del {
+        background: #e74c3c;
+        color: white;
+        border: none;
+        padding: 6px 10px;
+        cursor: pointer;
+        border-radius: 4px;
+      }
+      .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      input {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        flex: 1;
+        min-width: 150px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sidebar">
+      <img
+        src="http://bpit-backup.bpitindia.ac.in/wp-content/uploads/2024/03/logo1-1-1.png"
+        alt="BPIT Logo"
+        class="logo-img"
+      />
+      <hr style="width: 100%; opacity: 0.1; margin-bottom: 20px" />
+      <button class="nav-btn active" onclick="switchTab('students', 'RollNo')">
+        Students
+      </button>
+      <button class="nav-btn" onclick="switchTab('faculty', 'FacultyID')">
+        Faculty
+      </button>
+      <button class="nav-btn" onclick="switchTab('courses', 'CourseNo')">
+        Courses
+      </button>
+      <button class="nav-btn" onclick="switchTab('departments', 'DeptID')">
+        Departments
+      </button>
+      <button class="nav-btn" onclick="switchTab('colleges', 'CollegeID')">
+        Colleges
+      </button>
+    </div>
+
+    <div class="main">
+      <div class="card">
+        <h3 id="formTitle">Add Student</h3>
+        <form id="dynamicForm" class="form-row"></form>
+      </div>
+
+      <div class="card">
+        <h3 id="tableTitle">Students List</h3>
+        <table id="dataTable">
+          <thead id="thead"></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <script>
+      let currentTable = "students";
+      let currentPK = "RollNo";
+
+      const tableConfigs = {
+        students: {
+          pk: "RollNo",
+          fields: ["RollNo", "Name", "Year", "Address", "Contact_No"],
+        },
+        faculty: {
+          pk: "FacultyID",
+          fields: [
+            "FacultyID",
+            "Name",
+            "Designation",
+            "Qualification",
+            "DeptID",
+          ],
+        },
+        courses: {
+          pk: "CourseNo",
+          fields: ["CourseNo", "Course_Title", "Year", "DeptID"],
+        },
+        departments: {
+          pk: "DeptID",
+          fields: ["DeptID", "Dept_Name", "HOD_Name", "CollegeID"],
+        },
+        colleges: {
+          pk: "CollegeID",
+          fields: ["CollegeID", "Name", "Address", "Contact_No"],
+        },
+      };
+
+      function renderForm() {
+        const form = document.getElementById("dynamicForm");
+        const config = tableConfigs[currentTable];
+        form.innerHTML =
+          config.fields
+            .map(
+              (f) =>
+                `<input type="text" id="${f}" placeholder="${f}" required>`,
+            )
+            .join("") +
+          `<button type="submit" class="btn-add">Add Record</button>`;
+      }
+
+      async function loadData() {
+        const res = await fetch(`http://127.0.0.1:3000/api/${currentTable}`);
+        const data = await res.json();
+        const thead = document.getElementById("thead");
+        const tbody = document.getElementById("tbody");
+
+        if (data.length > 0) {
+          const cols = Object.keys(data[0]);
+          thead.innerHTML = `<tr>${cols.map((c) => `<th>${c}</th>`).join("")}<th>Actions</th></tr>`;
+          tbody.innerHTML = data
+            .map(
+              (row) => `
+                <tr>
+                    ${cols.map((c) => `<td>${row[c]}</td>`).join("")}
+                    <td><button class="btn-del" onclick="deleteItem('${row[currentPK]}')">Delete</button></td>
+                </tr>`,
+            )
+            .join("");
+        } else {
+          tbody.innerHTML = '<tr><td colspan="10">No records found.</td></tr>';
+        }
+      }
+
+      document.getElementById("dynamicForm").onsubmit = async (e) => {
+        e.preventDefault();
+        const config = tableConfigs[currentTable];
+        const payload = {};
+        config.fields.forEach((f) => {
+          payload[f] = document.getElementById(f).value;
+        });
+
+        const res = await fetch(`http://127.0.0.1:3000/api/${currentTable}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        if (res.ok) {
+          e.target.reset();
+          loadData();
+        } else {
+          const err = await res.json();
+          alert("Error: " + err.error);
+        }
+      };
+
+      async function deleteItem(idValue) {
+        if (confirm(`Delete this record?`)) {
+          await fetch(
+            `http://127.0.0.1:3000/api/${currentTable}/${currentPK}/${idValue}`,
+            { method: "DELETE" },
+          );
+          loadData();
+        }
+      }
+
+      function switchTab(tab, pk) {
+        currentTable = tab;
+        currentPK = pk;
+        document
+          .querySelectorAll(".nav-btn")
+          .forEach((b) => b.classList.remove("active"));
+        event.target.classList.add("active");
+        document.getElementById("formTitle").innerText =
+          "Add to " + tab.toUpperCase();
+        document.getElementById("tableTitle").innerText =
+          tab.toUpperCase() + " List";
+        renderForm();
+        loadData();
+      }
+
+      window.onload = () => {
+        renderForm();
+        loadData();
+      };
+    </script>
+  </body>
+</html>

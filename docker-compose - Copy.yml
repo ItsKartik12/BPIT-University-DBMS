@@ -1,0 +1,22 @@
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: university_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - university_data:/var/lib/postgresql/data
+
+  # This is your new Frontend Dashboard
+  dashboard:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+
+volumes:
+  university_data:

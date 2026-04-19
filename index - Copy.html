@@ -2,200 +2,198 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>BPIT University Management System</title>
+    <title>BPIT University DBMS</title>
     <style>
-      body {
-        font-family: "times new roman", serif;
-        display: flex;
-        margin: 0;
-        background: #f0f2f5;
+      :root {
+        --bg: #1a1a1a;
+        --card: #242424;
+        --text: #e0e0e0;
+        --accent: #4a90e2;
       }
-      .sidebar {
-        width: 240px;
-        background: #2c3e50;
-        color: white;
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        margin: 0;
+        display: flex;
+      }
+
+      /* Sidebar Styles */
+      nav {
+        width: 250px;
+        background: var(--card);
         height: 100vh;
         padding: 20px;
-        position: fixed;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        border-right: 1px solid #333;
       }
-
-      /* Updated Logo Styling */
-      .logo-img {
-        width: 160px;
-        margin-bottom: 25px;
-        border-radius: 4px;
-        background: white;
-        padding: 10px;
+      .logo {
+        width: 100px;
+        display: block;
+        margin: 0 auto 20px;
       }
-
-      .main {
-        margin-left: 280px;
-        padding: 30px;
-        width: calc(100% - 280px);
-      }
-      .card {
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        margin-bottom: 25px;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 15px;
-      }
-      th,
-      td {
-        padding: 12px;
-        border: 1px solid #dee2e6;
-        text-align: left;
-      }
-      th {
-        background: #3498db;
-        color: white;
+      nav h2 {
+        font-size: 1.2rem;
+        color: var(--accent);
+        text-align: center;
+        margin-bottom: 30px;
       }
       .nav-btn {
-        display: block;
         width: 100%;
         padding: 12px;
-        margin: 8px 0;
+        margin: 5px 0;
         background: none;
-        border: none;
-        color: #bdc3c7;
-        text-align: left;
+        border: 1px solid #444;
+        color: white;
         cursor: pointer;
-        border-radius: 5px;
+        text-align: left;
+        border-radius: 4px;
         transition: 0.3s;
       }
       .nav-btn:hover,
-      .active {
-        background: #34495e;
-        color: white;
-        border-left: 5px solid #3498db;
+      .nav-btn.active {
+        background: var(--accent);
+        border-color: var(--accent);
       }
-      .btn-add {
-        background: #2ecc71;
+
+      /* Main Content */
+      main {
+        flex: 1;
+        padding: 40px;
+        overflow-y: auto;
+      }
+      .form-container {
+        background: var(--card);
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+      }
+      input {
+        background: #333;
+        border: 1px solid #444;
+        color: white;
+        padding: 10px;
+        margin: 5px;
+        border-radius: 4px;
+      }
+      button.add-btn {
+        background: #28a745;
         color: white;
         border: none;
         padding: 10px 20px;
         cursor: pointer;
         border-radius: 4px;
       }
+
+      /* Table Styles */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--card);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      th,
+      td {
+        padding: 15px;
+        text-align: left;
+        border-bottom: 1px solid #333;
+      }
+      th {
+        background: #2d2d2d;
+        color: var(--accent);
+        text-transform: uppercase;
+        font-size: 0.85rem;
+      }
       .btn-del {
-        background: #e74c3c;
+        background: #dc3545;
         color: white;
         border: none;
-        padding: 6px 10px;
+        padding: 5px 10px;
         cursor: pointer;
-        border-radius: 4px;
-      }
-      .form-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-      input {
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        flex: 1;
-        min-width: 150px;
+        border-radius: 3px;
       }
     </style>
   </head>
   <body>
-    <div class="sidebar">
-      <img
-        src="http://bpit-backup.bpitindia.ac.in/wp-content/uploads/2024/03/logo1-1-1.png"
-        alt="BPIT Logo"
-        class="logo-img"
-      />
-      <hr style="width: 100%; opacity: 0.1; margin-bottom: 20px" />
-      <button class="nav-btn active" onclick="switchTab('students', 'RollNo')">
+    <nav>
+      <img src="bpit-logo.png" alt="BPIT Logo" class="logo" />
+      <h2>University DBMS</h2>
+      <button
+        class="nav-btn active"
+        onclick="switchTable('students', 'RollNo')"
+      >
         Students
       </button>
-      <button class="nav-btn" onclick="switchTab('faculty', 'FacultyID')">
+      <button class="nav-btn" onclick="switchTable('faculty', 'FacultyID')">
         Faculty
       </button>
-      <button class="nav-btn" onclick="switchTab('courses', 'CourseNo')">
-        Courses
-      </button>
-      <button class="nav-btn" onclick="switchTab('departments', 'DeptID')">
+      <button class="nav-btn" onclick="switchTable('departments', 'DeptID')">
         Departments
       </button>
-      <button class="nav-btn" onclick="switchTab('colleges', 'CollegeID')">
+      <button class="nav-btn" onclick="switchTable('colleges', 'CollegeID')">
         Colleges
       </button>
-    </div>
+      <button class="nav-btn" onclick="switchTable('courses', 'CourseNo')">
+        Courses
+      </button>
+      <button
+        class="nav-btn"
+        onclick="switchTable('progress_report', 'ReportID')"
+      >
+        Reports
+      </button>
+    </nav>
 
-    <div class="main">
-      <div class="card">
-        <h3 id="formTitle">Add Student</h3>
-        <form id="dynamicForm" class="form-row"></form>
+    <main>
+      <h1 id="table-title">Management System: Students</h1>
+
+      <div class="form-container" id="form-area">
+        <div id="dynamic-inputs">
+          <input id="in1" placeholder="Roll Number" />
+          <input id="in2" placeholder="Full Name" />
+          <input id="in3" placeholder="Year" />
+          <input id="in4" placeholder="Address" />
+          <input id="in5" placeholder="Contact No" />
+        </div>
+        <button class="add-btn" onclick="addRecord()">Add Record</button>
       </div>
 
-      <div class="card">
-        <h3 id="tableTitle">Students List</h3>
-        <table id="dataTable">
-          <thead id="thead"></thead>
-          <tbody id="tbody"></tbody>
-        </table>
-      </div>
-    </div>
+      <table>
+        <thead id="thead"></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </main>
 
     <script>
       let currentTable = "students";
       let currentPK = "RollNo";
 
-      const tableConfigs = {
-        students: {
-          pk: "RollNo",
-          fields: ["RollNo", "Name", "Year", "Address", "Contact_No"],
-        },
-        faculty: {
-          pk: "FacultyID",
-          fields: [
-            "FacultyID",
-            "Name",
-            "Designation",
-            "Qualification",
-            "DeptID",
-          ],
-        },
-        courses: {
-          pk: "CourseNo",
-          fields: ["CourseNo", "Course_Title", "Year", "DeptID"],
-        },
-        departments: {
-          pk: "DeptID",
-          fields: ["DeptID", "Dept_Name", "HOD_Name", "CollegeID"],
-        },
-        colleges: {
-          pk: "CollegeID",
-          fields: ["CollegeID", "Name", "Address", "Contact_No"],
-        },
-      };
+      async function switchTable(table, pk) {
+        currentTable = table;
+        currentPK = pk;
+        document.getElementById("table-title").innerText =
+          `Management System: ${table.charAt(0).toUpperCase() + table.slice(1)}`;
 
-      function renderForm() {
-        const form = document.getElementById("dynamicForm");
-        const config = tableConfigs[currentTable];
-        form.innerHTML =
-          config.fields
-            .map(
-              (f) =>
-                `<input type="text" id="${f}" placeholder="${f}" required>`,
-            )
-            .join("") +
-          `<button type="submit" class="btn-add">Add Record</button>`;
+        // Update active button UI
+        document
+          .querySelectorAll(".nav-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+        event.target.classList.add("active");
+
+        fetchData();
       }
 
-      async function loadData() {
-        const res = await fetch(`http://127.0.0.1:3000/api/${currentTable}`);
-        const data = await res.json();
+      async function fetchData() {
+        try {
+          const res = await fetch(`http://localhost:3000/api/${currentTable}`);
+          const data = await res.json();
+          renderTable(data);
+        } catch (err) {
+          console.error("Connection failed. Ensure server.js is running.");
+        }
+      }
+
+      function renderTable(data) {
         const thead = document.getElementById("thead");
         const tbody = document.getElementById("tbody");
 
@@ -208,7 +206,8 @@
                 <tr>
                     ${cols.map((c) => `<td>${row[c]}</td>`).join("")}
                     <td><button class="btn-del" onclick="deleteItem('${row[currentPK]}')">Delete</button></td>
-                </tr>`,
+                </tr>
+            `,
             )
             .join("");
         } else {
@@ -216,58 +215,18 @@
         }
       }
 
-      document.getElementById("dynamicForm").onsubmit = async (e) => {
-        e.preventDefault();
-        const config = tableConfigs[currentTable];
-        const payload = {};
-        config.fields.forEach((f) => {
-          payload[f] = document.getElementById(f).value;
-        });
-
-        const res = await fetch(`http://127.0.0.1:3000/api/${currentTable}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-
-        if (res.ok) {
-          e.target.reset();
-          loadData();
-        } else {
-          const err = await res.json();
-          alert("Error: " + err.error);
-        }
-      };
-
-      async function deleteItem(idValue) {
-        if (confirm(`Delete this record?`)) {
+      async function deleteItem(id) {
+        if (confirm("Are you sure you want to delete this record?")) {
           await fetch(
-            `http://127.0.0.1:3000/api/${currentTable}/${currentPK}/${idValue}`,
+            `http://localhost:3000/api/${currentTable}/${currentPK}/${id}`,
             { method: "DELETE" },
           );
-          loadData();
+          fetchData();
         }
       }
 
-      function switchTab(tab, pk) {
-        currentTable = tab;
-        currentPK = pk;
-        document
-          .querySelectorAll(".nav-btn")
-          .forEach((b) => b.classList.remove("active"));
-        event.target.classList.add("active");
-        document.getElementById("formTitle").innerText =
-          "Add to " + tab.toUpperCase();
-        document.getElementById("tableTitle").innerText =
-          tab.toUpperCase() + " List";
-        renderForm();
-        loadData();
-      }
-
-      window.onload = () => {
-        renderForm();
-        loadData();
-      };
+      // Initial load
+      fetchData();
     </script>
   </body>
 </html>

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BPIT Admin Pro | Animated</title>
+    <title>BPIT Admin Pro | Elite Edition</title>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap");
 
@@ -20,21 +20,38 @@
         --glass: blur(15px) saturate(180%);
       }
 
-      /* --- NEW KEYFRAMES --- */
-      @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
+      [data-theme="light"] {
+        --bg: #f1f5f9;
+        --sidebar: #ffffff;
+        --card: rgba(255, 255, 255, 0.9);
+        --accent-start: #2563eb;
+        --accent-end: #7c3aed;
+        --accent: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+        --text-primary: #1e293b;
+        --text-secondary: #64748b;
+        --border: rgba(0, 0, 0, 0.05);
       }
 
-      @keyframes slideInLeft {
-        from { transform: translateX(-100%); }
-        to { transform: translateX(0); }
+      /* --- ELITE KEYFRAMES --- */
+      @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+      }
+
+      @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); filter: blur(10px); }
+        to { opacity: 1; transform: translateY(0); filter: blur(0); }
+      }
+
+      @keyframes slideInRight {
+        from { opacity: 0; transform: translateX(-20px); }
+        to { opacity: 1; transform: translateX(0); }
       }
 
       @keyframes pulseGlow {
-        0% { box-shadow: 0 0 5px rgba(96, 165, 250, 0.2); }
-        50% { box-shadow: 0 0 20px rgba(96, 165, 250, 0.5); }
-        100% { box-shadow: 0 0 5px rgba(96, 165, 250, 0.2); }
+        0% { box-shadow: 0 0 5px rgba(96, 165, 250, 0.2); transform: scale(1); }
+        50% { box-shadow: 0 0 20px rgba(96, 165, 250, 0.4); transform: scale(1.02); }
+        100% { box-shadow: 0 0 5px rgba(96, 165, 250, 0.2); transform: scale(1); }
       }
 
       body {
@@ -44,7 +61,7 @@
         margin: 0;
         display: flex;
         min-height: 100vh;
-        overflow-x: hidden;
+        transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
       }
 
       .sidebar {
@@ -54,8 +71,18 @@
         position: fixed;
         padding: 40px 20px;
         border-right: 1px solid var(--border);
-        animation: slideInLeft 0.8s cubic-bezier(0.25, 1, 0.5, 1);
         z-index: 1000;
+      }
+
+      .logo-text {
+        background: var(--accent);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 800;
+        font-size: 26px;
+        margin-bottom: 40px;
+        display: inline-block;
+        animation: float 4s ease-in-out infinite;
       }
 
       .main {
@@ -64,41 +91,31 @@
         width: calc(100% - 300px);
       }
 
-      /* Animating the cards one by one */
       .card {
         background: var(--card);
         backdrop-filter: var(--glass);
         padding: 30px;
-        border-radius: 28px;
+        border-radius: 30px;
         border: 1px solid var(--border);
         margin-bottom: 30px;
-        animation: fadeInUp 0.8s ease-out forwards;
-        opacity: 0; /* Starts hidden for animation */
+        animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        opacity: 0;
       }
 
-      .card:nth-child(1) { animation-delay: 0.2s; }
-      .card:nth-child(2) { animation-delay: 0.4s; }
-
-      .logo-text {
-        background: var(--accent);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-weight: 800;
-        font-size: 24px;
-        margin-bottom: 30px;
-      }
+      .card:nth-child(1) { animation-delay: 0.1s; }
+      .card:nth-child(2) { animation-delay: 0.3s; }
 
       .nav-btn {
         width: 100%;
-        padding: 14px 18px;
-        margin-bottom: 10px;
+        padding: 16px;
+        margin-bottom: 12px;
         background: transparent;
-        border: 1px solid transparent;
+        border: none;
         color: var(--text-secondary);
         font-weight: 600;
-        border-radius: 14px;
+        border-radius: 16px;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: 0.3s all;
         text-align: left;
       }
 
@@ -110,23 +127,25 @@
 
       .nav-btn:hover:not(.active) {
         background: rgba(255, 255, 255, 0.05);
-        transform: translateX(5px);
+        padding-left: 24px; /* Slide effect on hover */
       }
 
-      input {
+      /* Staggered form inputs */
+      #dataForm input {
+        opacity: 0;
+        animation: slideInRight 0.5s ease forwards;
         background: rgba(0,0,0,0.2);
         border: 1px solid var(--border);
         color: white;
         padding: 14px;
         border-radius: 12px;
-        transition: 0.3s;
       }
 
-      input:focus {
-        border-color: var(--accent-start);
-        background: rgba(0,0,0,0.4);
-        outline: none;
-      }
+      #dataForm input:nth-child(1) { animation-delay: 0.2s; }
+      #dataForm input:nth-child(2) { animation-delay: 0.3s; }
+      #dataForm input:nth-child(3) { animation-delay: 0.4s; }
+      #dataForm input:nth-child(4) { animation-delay: 0.5s; }
+      #dataForm input:nth-child(5) { animation-delay: 0.6s; }
 
       .btn-add {
         background: var(--accent);
@@ -135,32 +154,26 @@
         font-weight: 800;
         border-radius: 12px;
         cursor: pointer;
-        transition: transform 0.2s;
+        transition: 0.3s;
       }
 
-      .btn-add:hover {
-        transform: scale(1.03);
-      }
+      .btn-add:active { transform: scale(0.95); }
 
-      .table-container { overflow-x: auto; }
-      table { width: 100%; border-collapse: collapse; min-width: 600px; }
-      th { color: var(--text-secondary); font-size: 0.8rem; text-transform: uppercase; padding: 15px; border-bottom: 1px solid var(--border); }
-      td { padding: 15px; border-bottom: 1px solid var(--border); }
+      table { width: 100%; border-collapse: collapse; }
+      tr { transition: 0.3s; }
+      tr:hover td { background: rgba(255,255,255,0.02); }
 
-      /* Mobile Adjustment */
       @media (max-width: 992px) {
-        body { flex-direction: column; }
         .sidebar { position: relative; width: 100%; height: auto; padding: 20px; border-right: none; }
         .main { margin-left: 0; width: 100%; box-sizing: border-box; }
         .nav-btn-container { display: flex; overflow-x: auto; gap: 10px; }
-        .nav-btn { min-width: 120px; }
       }
     </style>
   </head>
   <body>
     <nav class="sidebar">
       <div class="logo-text">BPIT Admin</div>
-      <button id="theme-toggle" class="nav-btn" style="text-align:center; border: 1px solid var(--border);">🌙 Mode</button>
+      <button id="theme-toggle" class="nav-btn" style="text-align:center; border:1px solid var(--border)">🌙 Mode</button>
       <div class="nav-btn-container">
         <button class="nav-btn active" onclick="switchTab('STUDENTS', 'RollNo', event)">Students</button>
         <button class="nav-btn" onclick="switchTab('FACULTY', 'FacultyID', event)">Faculty</button>
@@ -177,7 +190,7 @@
       </div>
 
       <div class="card">
-        <div class="table-container">
+        <div style="overflow-x: auto;">
           <table>
             <thead id="thead"></thead>
             <tbody id="tbody"></tbody>
@@ -190,6 +203,14 @@
       let activeTab = "STUDENTS";
       let activePK = "RollNo";
       const BASE_URL = "https://bpit-university-dbms.onrender.com/api";
+
+      // Theme logic
+      const themeToggle = document.getElementById('theme-toggle');
+      themeToggle.onclick = () => {
+        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+        document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
+        themeToggle.innerText = isLight ? '🌙 Mode' : '☀️ Mode';
+      };
 
       const schema = {
         STUDENTS: ["RollNo", "Name", "Year", "Address", "Contact_No"],
@@ -209,17 +230,17 @@
       async function loadData() {
         const tb = document.getElementById("tbody");
         const th = document.getElementById("thead");
-        tb.innerHTML = "<tr><td colspan='100%'>Loading Data...</td></tr>";
+        tb.innerHTML = "<tr><td colspan='100%'>Fetching data...</td></tr>";
         try {
           const res = await fetch(`${BASE_URL}/${activeTab}`);
           const data = await res.json();
           if (data && data.length > 0) {
             const cols = Object.keys(data[0]);
-            th.innerHTML = `<tr>${cols.map(c => `<th>${c}</th>`).join("")}<th>Action</th></tr>`;
-            tb.innerHTML = data.map(row => `<tr>${cols.map(c => `<td>${row[c] || ""}</td>`).join("")}
+            th.innerHTML = `<tr>${cols.map(c => `<th style="text-align:left; color:var(--text-secondary); padding:15px; font-size:12px;">${c}</th>`).join("")}<th></th></tr>`;
+            tb.innerHTML = data.map(row => `<tr style="border-bottom: 1px solid var(--border)">${cols.map(c => `<td style="padding:15px;">${row[c] || ""}</td>`).join("")}
               <td><button style="color:#ff4d4d; border:none; background:none; cursor:pointer;" onclick="del('${row[activePK]}')">Delete</button></td></tr>`).join("");
-          } else { tb.innerHTML = "<tr><td colspan='100%'>Empty Table</td></tr>"; }
-        } catch (e) { tb.innerHTML = "<tr><td>Connection Error</td></tr>"; }
+          }
+        } catch (e) { tb.innerHTML = "<tr><td>Offline</td></tr>"; }
       }
 
       document.getElementById("dataForm").onsubmit = async (e) => {
@@ -227,11 +248,11 @@
         const body = {};
         schema[activeTab].forEach(f => body[f] = document.getElementById(f).value);
         await fetch(`${BASE_URL}/${activeTab}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-        e.target.reset(); loadData();
+        e.target.reset(); renderUI(); // re-render to trigger input animations
       };
 
       async function del(id) {
-        if(confirm("Delete?")) {
+        if(confirm("Delete entry?")) {
           await fetch(`${BASE_URL}/${activeTab}/${activePK}/${id}`, { method: "DELETE" });
           loadData();
         }

@@ -2,231 +2,241 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>BPIT University DBMS</title>
+    <title>BPIT University Management</title>
     <style>
+      @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap");
+
       :root {
-        --bg: #1a1a1a;
-        --card: #242424;
-        --text: #e0e0e0;
-        --accent: #4a90e2;
+        --bg: #0b0f1a;
+        --sidebar: #111827;
+        --card: rgba(31, 41, 55, 0.7);
+        --accent: #60a5fa;
+        --text-primary: #f8fafc;
+        --text-secondary: #94a3b8;
       }
+
       body {
-        font-family: "Segoe UI", sans-serif;
-        background: var(--bg);
-        color: var(--text);
+        font-family: "Plus Jakarta Sans", sans-serif;
+        background-color: var(--bg);
+        color: var(--text-primary);
         margin: 0;
         display: flex;
+        font-size: 16px; /* Normal content size */
       }
 
-      /* Sidebar Styles */
-      nav {
-        width: 250px;
-        background: var(--card);
+      /* Sidebar - Emphasized at 18px */
+      .sidebar {
+        width: 260px;
+        background: var(--sidebar);
         height: 100vh;
-        padding: 20px;
-        border-right: 1px solid #333;
+        position: fixed;
+        padding: 40px 20px;
+        border-right: 1px solid rgba(255, 255, 255, 0.05);
       }
-      .logo {
-        width: 100px;
-        display: block;
-        margin: 0 auto 20px;
-      }
-      nav h2 {
-        font-size: 1.2rem;
-        color: var(--accent);
-        text-align: center;
-        margin-bottom: 30px;
-      }
+
       .nav-btn {
+        display: block;
         width: 100%;
-        padding: 12px;
-        margin: 5px 0;
-        background: none;
-        border: 1px solid #444;
-        color: white;
-        cursor: pointer;
+        padding: 15px;
+        margin-bottom: 10px;
+        background: transparent;
+        border: none;
+        color: var(--text-secondary);
+        font-size: 18px; /* Slightly larger sidebar font */
+        font-weight: 600;
         text-align: left;
-        border-radius: 4px;
+        cursor: pointer;
+        border-radius: 12px;
         transition: 0.3s;
       }
+
       .nav-btn:hover,
       .nav-btn.active {
-        background: var(--accent);
-        border-color: var(--accent);
+        background: rgba(96, 165, 250, 0.1);
+        color: var(--accent);
       }
 
-      /* Main Content */
-      main {
-        flex: 1;
-        padding: 40px;
-        overflow-y: auto;
+      /* Main Glass-morphism Cards */
+      .main {
+        margin-left: 300px;
+        padding: 50px;
+        width: 100%;
       }
-      .form-container {
+
+      .card {
         background: var(--card);
-        padding: 20px;
-        border-radius: 8px;
+        backdrop-filter: blur(10px);
+        padding: 30px;
+        border-radius: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
         margin-bottom: 30px;
       }
-      input {
-        background: #333;
-        border: 1px solid #444;
-        color: white;
-        padding: 10px;
-        margin: 5px;
-        border-radius: 4px;
-      }
-      button.add-btn {
-        background: #28a745;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        cursor: pointer;
-        border-radius: 4px;
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
       }
 
-      /* Table Styles */
+      input {
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: white;
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 16px;
+      }
+
+      .btn-add {
+        background: var(--accent);
+        color: #000;
+        font-weight: 800;
+        border: none;
+        padding: 12px;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+
       table {
         width: 100%;
         border-collapse: collapse;
-        background: var(--card);
-        border-radius: 8px;
-        overflow: hidden;
-      }
-      th,
-      td {
-        padding: 15px;
-        text-align: left;
-        border-bottom: 1px solid #333;
+        margin-top: 20px;
       }
       th {
-        background: #2d2d2d;
-        color: var(--accent);
+        text-align: left;
+        color: var(--text-secondary);
+        padding: 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 0.8rem;
         text-transform: uppercase;
-        font-size: 0.85rem;
       }
+      td {
+        padding: 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
       .btn-del {
-        background: #dc3545;
-        color: white;
+        color: #f43f5e;
+        background: none;
         border: none;
-        padding: 5px 10px;
         cursor: pointer;
-        border-radius: 3px;
+        font-weight: 600;
       }
     </style>
   </head>
   <body>
-    <nav>
-      <img src="bpit-logo.png" alt="BPIT Logo" class="logo" />
-      <h2>University DBMS</h2>
-      <button
-        class="nav-btn active"
-        onclick="switchTable('students', 'RollNo')"
-      >
+    <nav class="sidebar">
+      <h2 style="margin-bottom: 40px; color: var(--accent)">BPIT Admin</h2>
+      <button class="nav-btn active" onclick="switchTab('STUDENTS', 'RollNo')">
         Students
       </button>
-      <button class="nav-btn" onclick="switchTable('faculty', 'FacultyID')">
+      <button class="nav-btn" onclick="switchTab('FACULTY', 'FacultyID')">
         Faculty
       </button>
-      <button class="nav-btn" onclick="switchTable('departments', 'DeptID')">
-        Departments
-      </button>
-      <button class="nav-btn" onclick="switchTable('colleges', 'CollegeID')">
-        Colleges
-      </button>
-      <button class="nav-btn" onclick="switchTable('courses', 'CourseNo')">
+      <button class="nav-btn" onclick="switchTab('COURSES', 'CourseNo')">
         Courses
       </button>
-      <button
-        class="nav-btn"
-        onclick="switchTable('progress_report', 'ReportID')"
-      >
-        Reports
+      <button class="nav-btn" onclick="switchTab('DEPARTMENTS', 'DeptID')">
+        Departments
+      </button>
+      <button class="nav-btn" onclick="switchTab('COLLEGES', 'CollegeID')">
+        Colleges
       </button>
     </nav>
 
-    <main>
-      <h1 id="table-title">Management System: Students</h1>
-
-      <div class="form-container" id="form-area">
-        <div id="dynamic-inputs">
-          <input id="in1" placeholder="Roll Number" />
-          <input id="in2" placeholder="Full Name" />
-          <input id="in3" placeholder="Year" />
-          <input id="in4" placeholder="Address" />
-          <input id="in5" placeholder="Contact No" />
-        </div>
-        <button class="add-btn" onclick="addRecord()">Add Record</button>
+    <main class="main">
+      <div class="card">
+        <h2 id="viewTitle">Students Management</h2>
+        <form id="dataForm" class="form-grid"></form>
       </div>
 
-      <table>
-        <thead id="thead"></thead>
-        <tbody id="tbody"></tbody>
-      </table>
+      <div class="card">
+        <table>
+          <thead id="thead"></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
     </main>
 
     <script>
-      let currentTable = "students";
-      let currentPK = "RollNo";
+      let activeTab = "STUDENTS",
+        activePK = "RollNo";
+      const schema = {
+        STUDENTS: ["RollNo", "Name", "Year", "Address", "Contact_No"],
+        FACULTY: [
+          "FacultyID",
+          "Name",
+          "Designation",
+          "Qualification",
+          "DeptID",
+        ],
+        COURSES: ["CourseNo", "Course_Title", "Year", "DeptID"],
+        DEPARTMENTS: ["DeptID", "Dept_Name", "HOD_Name", "CollegeID"],
+        COLLEGES: ["CollegeID", "Name", "Address", "Contact_No"],
+      };
 
-      async function switchTable(table, pk) {
-        currentTable = table;
-        currentPK = pk;
-        document.getElementById("table-title").innerText =
-          `Management System: ${table.charAt(0).toUpperCase() + table.slice(1)}`;
-
-        // Update active button UI
-        document
-          .querySelectorAll(".nav-btn")
-          .forEach((btn) => btn.classList.remove("active"));
-        event.target.classList.add("active");
-
-        fetchData();
+      function renderUI() {
+        document.getElementById("dataForm").innerHTML =
+          schema[activeTab]
+            .map((f) => `<input id="${f}" placeholder="${f}" required>`)
+            .join("") +
+          `<button type="submit" class="btn-add">Add Entry</button>`;
+        loadData();
       }
 
-      async function fetchData() {
-        try {
-          const res = await fetch(`http://localhost:3000/api/${currentTable}`);
-          const data = await res.json();
-          renderTable(data);
-        } catch (err) {
-          console.error("Connection failed. Ensure server.js is running.");
-        }
-      }
-
-      function renderTable(data) {
-        const thead = document.getElementById("thead");
-        const tbody = document.getElementById("tbody");
-
+      async function loadData() {
+        const res = await fetch(`http://localhost:3000/api/${activeTab}`);
+        const data = await res.json();
+        const th = document.getElementById("thead"),
+          tb = document.getElementById("tbody");
         if (data.length > 0) {
           const cols = Object.keys(data[0]);
-          thead.innerHTML = `<tr>${cols.map((c) => `<th>${c}</th>`).join("")}<th>Actions</th></tr>`;
-          tbody.innerHTML = data
+          th.innerHTML = `<tr>${cols.map((c) => `<th>${c}</th>`).join("")}<th>Action</th></tr>`;
+          tb.innerHTML = data
             .map(
-              (row) => `
-                <tr>
-                    ${cols.map((c) => `<td>${row[c]}</td>`).join("")}
-                    <td><button class="btn-del" onclick="deleteItem('${row[currentPK]}')">Delete</button></td>
-                </tr>
-            `,
+              (row) =>
+                `<tr>${cols.map((c) => `<td>${row[c]}</td>`).join("")}<td><button class="btn-del" onclick="del('${row[activePK]}')">Delete</button></td></tr>`,
             )
             .join("");
-        } else {
-          tbody.innerHTML = '<tr><td colspan="10">No records found.</td></tr>';
         }
       }
 
-      async function deleteItem(id) {
-        if (confirm("Are you sure you want to delete this record?")) {
+      document.getElementById("dataForm").onsubmit = async (e) => {
+        e.preventDefault();
+        const body = {};
+        schema[activeTab].forEach(
+          (f) => (body[f] = document.getElementById(f).value),
+        );
+        await fetch(`http://localhost:3000/api/${activeTab}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        e.target.reset();
+        loadData();
+      };
+
+      async function del(id) {
+        if (confirm("Delete record?")) {
           await fetch(
-            `http://localhost:3000/api/${currentTable}/${currentPK}/${id}`,
+            `http://localhost:3000/api/${activeTab}/${activePK}/${id}`,
             { method: "DELETE" },
           );
-          fetchData();
+          loadData();
         }
       }
 
-      // Initial load
-      fetchData();
+      function switchTab(tab, pk) {
+        activeTab = tab;
+        activePK = pk;
+        document
+          .querySelectorAll(".nav-btn")
+          .forEach((b) => b.classList.remove("active"));
+        event.target.classList.add("active");
+        document.getElementById("viewTitle").innerText = tab + " Management";
+        renderUI();
+      }
+      window.onload = renderUI;
     </script>
   </body>
 </html>

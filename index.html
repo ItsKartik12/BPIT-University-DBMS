@@ -7,6 +7,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
+        /* --- DARK THEME (DEFAULT) --- */
         :root {
             --bg-deep: #050a14;
             --sidebar-bg: #0a1120;
@@ -17,6 +18,21 @@
             --text-main: #ffffff;
             --text-dim: #94a3b8;
             --border-color: #1e293b;
+            --input-bg: #050a14;
+        }
+
+        /* --- LIGHT THEME --- */
+        body.light-theme {
+            --bg-deep: #f0f2f5;
+            --sidebar-bg: #ffffff;
+            --card-bg: #ffffff;
+            --accent-cyan: #0080ff;
+            --accent-purple: #6200ea;
+            --gradient-main: linear-gradient(90deg, #0080ff, #6200ea);
+            --text-main: #1a202c;
+            --text-dim: #4a5568;
+            --border-color: #e2e8f0;
+            --input-bg: #f7fafc;
         }
 
         * { box-sizing: border-box; }
@@ -28,6 +44,7 @@
             margin: 0;
             display: flex;
             min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         /* --- SIDEBAR --- */
@@ -38,6 +55,7 @@
             padding: 30px 20px;
             display: flex;
             flex-direction: column;
+            transition: background-color 0.3s;
         }
 
         .logo {
@@ -47,7 +65,6 @@
             margin-bottom: 40px;
             letter-spacing: 1px;
         }
-
         .logo span { color: #7000ff; }
 
         .theme-btn {
@@ -59,6 +76,12 @@
             margin-bottom: 30px;
             cursor: pointer;
             font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .theme-btn:hover {
+            border-color: var(--accent-cyan);
+            color: var(--text-main);
         }
 
         .nav-item {
@@ -83,8 +106,8 @@
         }
 
         .nav-item:hover:not(.active) {
-            color: white;
-            background: rgba(255,255,255,0.05);
+            color: var(--text-main);
+            background: rgba(128,128,128,0.1);
         }
 
         /* --- MAIN CONTENT --- */
@@ -100,6 +123,7 @@
             border-radius: 12px;
             padding: 30px;
             margin-bottom: 30px;
+            transition: background-color 0.3s, border-color 0.3s;
         }
 
         h1 {
@@ -111,7 +135,6 @@
             position: relative;
             display: inline-block;
         }
-
         h1::after {
             content: '';
             display: block;
@@ -132,17 +155,15 @@
         }
 
         input {
-            background: #050a14;
+            background: var(--input-bg);
             border: 1px solid var(--border-color);
-            color: white;
+            color: var(--text-main);
             padding: 14px;
             border-radius: 8px;
             outline: none;
+            transition: 0.3s;
         }
-
-        input:focus {
-            border-color: var(--accent-cyan);
-        }
+        input:focus { border-color: var(--accent-cyan); }
 
         .add-btn {
             background: var(--gradient-main);
@@ -154,7 +175,6 @@
             cursor: pointer;
             transition: 0.3s;
         }
-
         .add-btn:hover {
             transform: scale(1.02);
             filter: brightness(1.1);
@@ -166,7 +186,6 @@
             border-collapse: collapse;
             margin-top: 10px;
         }
-
         th {
             text-align: left;
             color: var(--accent-cyan);
@@ -175,10 +194,9 @@
             padding: 15px;
             border-bottom: 1px solid var(--border-color);
         }
-
         td {
             padding: 18px 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid var(--border-color);
             font-size: 14px;
             font-weight: 600;
         }
@@ -194,18 +212,15 @@
             cursor: pointer;
             transition: 0.2s;
         }
-
         .delete-btn:hover {
             background: #ff0055;
             color: white;
         }
     </style>
 </head>
-<body>
-
-    <aside class="sidebar">
+<body class="dark-theme"> <aside class="sidebar">
         <div class="logo">BPIT <span>DB</span></div>
-        <button class="theme-btn">Toggle Theme</button>
+        <button class="theme-btn" onclick="toggleTheme()" id="themeToggleBtn">Toggle Light Mode</button>
         
         <button class="nav-item active" onclick="switchTab('STUDENTS', 'RollNo', event)">Students</button>
         <button class="nav-item" onclick="switchTab('FACULTY', 'FacultyID', event)">Faculty</button>
@@ -231,6 +246,20 @@
     </main>
 
     <script>
+        // --- NEW THEME TOGGLE LOGIC ---
+        function toggleTheme() {
+            const body = document.body;
+            const btn = document.getElementById('themeToggleBtn');
+            
+            body.classList.toggle('light-theme');
+            
+            if (body.classList.contains('light-theme')) {
+                btn.innerText = "Toggle Dark Mode";
+            } else {
+                btn.innerText = "Toggle Light Mode";
+            }
+        }
+
         let activeTab = "STUDENTS";
         let activePK = "RollNo";
         const BASE_URL = "https://bpit-university-dbms.onrender.com/api";

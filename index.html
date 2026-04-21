@@ -3,38 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BPIT Database Management</title>
+    <title>BPIT University Management | Elite</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
 
-        /* --- THEMES --- */
         :root {
             --bg-deep: #050a14;
             --sidebar-bg: #0a1120;
             --card-bg: #0d1629;
             --accent-cyan: #00f2ff;
             --accent-purple: #7000ff;
-            --gradient-main: linear-gradient(90deg, #00f2ff, #7000ff);
+            --gradient-main: linear-gradient(135deg, #00f2ff, #7000ff);
             --text-main: #ffffff;
             --text-dim: #94a3b8;
             --border-color: #1e293b;
-            --input-bg: #050a14;
+            --glow: 0 0 15px rgba(0, 242, 255, 0.4);
         }
 
         body.light-theme {
             --bg-deep: #f0f2f5;
             --sidebar-bg: #ffffff;
             --card-bg: #ffffff;
-            --accent-cyan: #0080ff;
-            --accent-purple: #6200ea;
-            --gradient-main: linear-gradient(90deg, #0080ff, #6200ea);
-            --text-main: #1a202c;
-            --text-dim: #4a5568;
-            --border-color: #e2e8f0;
-            --input-bg: #f7fafc;
+            --accent-cyan: #0062ff;
+            --accent-purple: #7000ff;
+            --gradient-main: linear-gradient(135deg, #0062ff, #7000ff);
+            --text-main: #1e293b;
+            --text-dim: #64748b;
+            --border-color: #cbd5e1;
+            --glow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; transition: all 0.3s ease; }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -43,144 +42,171 @@
             margin: 0;
             display: flex;
             min-height: 100vh;
-            transition: background-color 0.3s, color 0.3s;
         }
 
         /* --- SIDEBAR --- */
         .sidebar {
-            width: 240px;
+            width: 260px;
             background-color: var(--sidebar-bg);
             border-right: 1px solid var(--border-color);
-            padding: 30px 20px;
+            padding: 40px 20px;
             display: flex;
             flex-direction: column;
             position: fixed;
             height: 100vh;
-            transition: 0.3s;
+            z-index: 100;
         }
 
-        .logo { font-size: 22px; font-weight: 800; color: #4facfe; margin-bottom: 40px; }
-        .logo span { color: #7000ff; }
+        .logo { 
+            font-size: 26px; 
+            font-weight: 800; 
+            margin-bottom: 50px; 
+            color: var(--accent-cyan);
+            text-shadow: var(--glow);
+        }
+        .logo span { color: var(--accent-purple); }
 
         .theme-btn {
-            background: transparent;
+            background: rgba(255,255,255,0.03);
             border: 1px solid var(--border-color);
             color: var(--text-dim);
             padding: 10px;
-            border-radius: 8px;
+            border-radius: 12px;
             margin-bottom: 30px;
             cursor: pointer;
             font-weight: 600;
-            transition: 0.2s;
+            font-size: 12px;
         }
-        .theme-btn:hover { border-color: var(--accent-cyan); color: var(--text-main); }
+        .theme-btn:hover { border-color: var(--accent-cyan); color: white; }
 
         .nav-item {
-            padding: 12px 16px;
-            border-radius: 8px;
+            padding: 15px 20px;
+            border-radius: 12px;
             color: var(--text-dim);
             font-weight: 600;
             margin-bottom: 10px;
             cursor: pointer;
             border: none;
-            background: none;
+            background: transparent;
             text-align: left;
             width: 100%;
-            transition: 0.3s;
+            position: relative;
         }
 
         .nav-item.active {
             background: var(--gradient-main);
             color: white;
-            box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
+            box-shadow: 0 10px 20px rgba(0, 242, 255, 0.2);
+            transform: translateX(5px);
         }
 
         /* --- MAIN CONTENT --- */
         .main-content {
             flex: 1;
-            margin-left: 240px;
-            padding: 40px;
+            margin-left: 260px;
+            padding: 50px;
         }
 
         .section-card {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 30px;
+            border-radius: 20px;
+            padding: 35px;
             margin-bottom: 30px;
-            transition: 0.3s;
+            box-shadow: var(--glow);
         }
 
-        /* --- SEARCH BAR --- */
-        .search-wrapper {
-            margin-bottom: 25px;
+        h1 { 
+            font-size: 36px; 
+            font-weight: 800; 
+            margin: 0 0 15px 0; 
+            letter-spacing: -1px;
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .header-underline {
+            width: 80px;
+            height: 6px;
+            background: var(--accent-cyan);
+            box-shadow: var(--glow);
+            border-radius: 10px;
+            margin-bottom: 30px;
         }
 
         .search-input {
             width: 100%;
             max-width: 450px;
-            background: var(--input-bg);
-            border: 1px solid var(--accent-cyan);
-            color: var(--text-main);
-            padding: 12px 18px;
-            border-radius: 10px;
+            background: var(--bg-deep);
+            border: 1px solid var(--border-color);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 12px;
             outline: none;
-            font-size: 14px;
-            box-shadow: 0 0 15px rgba(0, 242, 255, 0.05);
-            transition: 0.3s;
+            margin-bottom: 25px;
         }
-        .search-input:focus { box-shadow: 0 0 20px rgba(0, 242, 255, 0.15); }
-
-        h1 { font-size: 32px; font-weight: 700; margin-top: 0; text-transform: uppercase; }
-        h1::after {
-            content: ''; display: block; width: 50px; height: 4px;
-            background: var(--accent-cyan); margin-top: 8px; border-radius: 2px;
-        }
+        .search-input:focus { border-color: var(--accent-cyan); box-shadow: var(--glow); }
 
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-top: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
         }
 
         input {
-            background: var(--input-bg);
+            background: var(--bg-deep);
             border: 1px solid var(--border-color);
             color: var(--text-main);
-            padding: 14px;
-            border-radius: 8px;
+            padding: 15px;
+            border-radius: 12px;
             outline: none;
         }
+        input:focus { border-color: var(--accent-purple); }
 
         .add-btn {
             background: var(--gradient-main);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-weight: 800;
             cursor: pointer;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
+        .add-btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(112, 0, 255, 0.4); }
 
         /* --- TABLE --- */
+        .stats { 
+            color: var(--accent-cyan); 
+            font-weight: 700; 
+            margin-bottom: 20px; 
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
         table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; color: var(--accent-cyan); font-size: 12px; text-transform: uppercase; padding: 15px; border-bottom: 1px solid var(--border-color); }
-        td { padding: 18px 15px; border-bottom: 1px solid var(--border-color); font-size: 14px; font-weight: 600; }
+        th { text-align: left; color: var(--text-dim); font-size: 11px; text-transform: uppercase; padding: 20px; border-bottom: 2px solid var(--border-color); }
+        td { padding: 20px; border-bottom: 1px solid var(--border-color); font-size: 14px; font-weight: 500; }
 
         .delete-btn {
-            background: transparent; border: 1px solid #ff0055; color: #ff0055;
-            padding: 5px 12px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer;
-            transition: 0.2s;
+            background: rgba(255, 0, 85, 0.05); 
+            border: 1px solid #ff0055; 
+            color: #ff0055;
+            padding: 8px 16px; 
+            border-radius: 8px; 
+            font-size: 11px; 
+            font-weight: 800; 
+            cursor: pointer;
         }
-        .delete-btn:hover { background: #ff0055; color: white; }
+        .delete-btn:hover { background: #ff0055; color: white; box-shadow: 0 0 15px rgba(255, 0, 85, 0.3); }
     </style>
 </head>
 <body>
 
     <aside class="sidebar">
         <div class="logo">BPIT <span>DB</span></div>
-        <button class="theme-btn" onclick="toggleTheme()" id="themeToggleBtn">Toggle Light Mode</button>
+        <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">SWITCH THEME</button>
         
         <button class="nav-item active" onclick="switchTab('STUDENTS', 'RollNo', event)">Students</button>
         <button class="nav-item" onclick="switchTab('FACULTY', 'FacultyID', event)">Faculty</button>
@@ -192,15 +218,14 @@
     <main class="main-content">
         <section class="section-card">
             <h1 id="viewTitle">STUDENTS</h1>
+            <div class="header-underline"></div>
             
-            <div class="search-wrapper">
-                <input type="text" id="searchInput" class="search-input" placeholder="Quick Search by ID or Name..." onkeyup="filterData()">
-            </div>
-
+            <input type="text" id="search" class="search-input" placeholder="Quick Search (ID, Name, Year...)" onkeyup="filter()">
             <form id="dataForm" class="form-grid"></form>
         </section>
 
-        <section class="section-card" style="padding: 10px;">
+        <section class="section-card">
+            <div class="stats">Database Sync: <span id="count" style="color:white">0</span> Records found</div>
             <div style="overflow-x: auto;">
                 <table>
                     <thead id="thead"></thead>
@@ -211,16 +236,14 @@
     </main>
 
     <script>
-        let allData = []; // Local cache for instant searching
+        let allData = [];
         let activeTab = "STUDENTS";
         let activePK = "RollNo";
-        const BASE_URL = "https://bpit-university-dbms.onrender.com/api";
+        const API = "https://bpit-university-dbms.onrender.com/api";
 
         function toggleTheme() {
-            const body = document.body;
-            const btn = document.getElementById('themeToggleBtn');
-            body.classList.toggle('light-theme');
-            btn.innerText = body.classList.contains('light-theme') ? "Toggle Dark Mode" : "Toggle Light Mode";
+            document.body.classList.toggle('light-theme');
+            document.getElementById('themeBtn').innerText = document.body.classList.contains('light-theme') ? "DARK MODE" : "LIGHT MODE";
         }
 
         const schema = {
@@ -228,94 +251,62 @@
             FACULTY: ["FacultyID", "Name", "Designation", "Qualification", "DeptID"],
             COURSES: ["CourseNo", "Course_Title", "Year", "DeptID"],
             DEPARTMENTS: ["DeptID", "Dept_Name", "HOD_Name", "CollegeID"],
-            COLLEGES: ["CollegeID", "Name", "Address", "Contact_No"],
+            COLLEGES: ["CollegeID", "Name", "Address", "Contact_No"]
         };
 
-        // FETCH DATA
-        async function loadData() {
+        async function load() {
             const tb = document.getElementById("tbody");
-            const th = document.getElementById("thead");
-            tb.innerHTML = "<tr><td colspan='100%' style='text-align:center; opacity:0.5'>Syncing with server...</td></tr>";
-            
+            tb.innerHTML = "<tr><td colspan='10' style='text-align:center; opacity:0.5'>FETCHING FROM RENDER...</td></tr>";
             try {
-                const res = await fetch(`${BASE_URL}/${activeTab}`);
+                const res = await fetch(`${API}/${activeTab}`);
                 allData = await res.json();
-                renderTable(allData);
-            } catch (e) {
-                tb.innerHTML = "<tr><td colspan='100%' style='text-align:center; color:#ff0055'>Sync Error. Check API.</td></tr>";
-            }
+                render(allData);
+            } catch (e) { tb.innerHTML = "<tr><td>Error linking to Database.</td></tr>"; }
         }
 
-        // RENDER TABLE DATA
-        function renderTable(dataToDisplay) {
+        function render(data) {
             const tb = document.getElementById("tbody");
             const th = document.getElementById("thead");
-            
-            if (dataToDisplay && dataToDisplay.length > 0) {
-                const cols = Object.keys(dataToDisplay[0]);
+            document.getElementById("count").innerText = data.length;
+            if (data.length > 0) {
+                const cols = Object.keys(data[0]);
                 th.innerHTML = `<tr>${cols.map(c => `<th>${c}</th>`).join("")}<th></th></tr>`;
-                tb.innerHTML = dataToDisplay.map(row => `
-                    <tr>
-                        ${cols.map(c => `<td>${row[c] || "—"}</td>`).join("")}
-                        <td style="text-align:right">
-                            <button class="delete-btn" onclick="del('${row[activePK]}')">DELETE</button>
-                        </td>
-                    </tr>`).join("");
-            } else {
-                tb.innerHTML = "<tr><td colspan='100%' style='text-align:center'>No results found.</td></tr>";
-            }
+                tb.innerHTML = data.map(row => `<tr>${cols.map(c => `<td>${row[c]||"—"}</td>`).join("")}<td><button class="delete-btn" onclick="del('${row[activePK]}')">DELETE</button></td></tr>`).join("");
+            } else { tb.innerHTML = "<tr><td colspan='10' style='text-align:center'>Empty Dataset</td></tr>"; }
         }
 
-        // SEARCH FUNCTION (ID or Name)
-        function filterData() {
-            const query = document.getElementById("searchInput").value.toLowerCase();
-            
-            const filtered = allData.filter(item => {
-                const nameField = (item.Name || item.Course_Title || item.Dept_Name || "").toLowerCase();
-                const idField = String(item[activePK]).toLowerCase();
-                return nameField.includes(query) || idField.includes(query);
-            });
-
-            renderTable(filtered);
+        function filter() {
+            const q = document.getElementById("search").value.toLowerCase();
+            render(allData.filter(item => Object.values(item).some(v => String(v).toLowerCase().includes(q))));
         }
 
         function renderUI() {
-            const form = document.getElementById("dataForm");
-            form.innerHTML = schema[activeTab].map(f => 
-                `<input id="${f}" placeholder="${f}" required>`
-            ).join("") + `<button type="submit" class="add-btn">Add Record</button>`;
-            document.getElementById("searchInput").value = ""; 
-            loadData();
+            document.getElementById("dataForm").innerHTML = schema[activeTab].map(f => `<input id="${f}" placeholder="${f}" required>`).join("") + `<button type="submit" class="add-btn">Add Record</button>`;
+            document.getElementById("search").value = "";
+            load();
         }
 
         document.getElementById("dataForm").onsubmit = async (e) => {
             e.preventDefault();
-            const body = {};
-            schema[activeTab].forEach(f => body[f] = document.getElementById(f).value);
-            await fetch(`${BASE_URL}/${activeTab}`, { 
-                method: "POST", 
-                headers: { "Content-Type": "application/json" }, 
-                body: JSON.stringify(body) 
-            });
-            e.target.reset(); 
-            loadData();
+            const body = {}; schema[activeTab].forEach(f => body[f] = document.getElementById(f).value);
+            await fetch(`${API}/${activeTab}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+            e.target.reset(); load();
         };
 
         async function del(id) {
-            if(confirm(`Remove record ${id}?`)) {
-                await fetch(`${BASE_URL}/${activeTab}/${activePK}/${id}`, { method: "DELETE" });
-                loadData();
+            if(confirm("Confirm deletion of record " + id + "?")) { 
+                await fetch(`${API}/${activeTab}/${activePK}/${id}`, { method: "DELETE" }); 
+                load(); 
             }
         }
 
-        function switchTab(tab, pk, event) {
-            activeTab = tab; activePK = pk;
+        function switchTab(t, pk, e) {
+            activeTab = t; activePK = pk;
             document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active"));
-            event.currentTarget.classList.add("active");
-            document.getElementById("viewTitle").innerText = tab;
+            e.currentTarget.classList.add("active");
+            document.getElementById("viewTitle").innerText = t;
             renderUI();
         }
-
         window.onload = renderUI;
     </script>
 </body>

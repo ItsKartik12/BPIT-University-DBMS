@@ -28,9 +28,9 @@ app.get('/api/:table', async (req, res) => {
         res.json(result.rows);
     } catch (err) {
         console.error(`Error fetching ${tableName}:`, err.message);
-        res.status(500).json({ 
-            error: err.message, 
-            hint: `Make sure table "${tableName}" exists in your Neon SQL Editor.` 
+        res.status(500).json({
+            error: err.message,
+            hint: `Make sure table "${tableName}" exists in your Neon SQL Editor.`
         });
     }
 });

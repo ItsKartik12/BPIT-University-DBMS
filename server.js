@@ -9,33 +9,36 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// 2. Database Connection
-// This uses your Render environment variable or the fallback link
+// 2. Database Connection - Optimized for Neon/Render
 const connectionString = process.env.DATABASE_URL || 'postgresql://neondb_owner:npg_EReuSt2A6Qdi@ep-sparkling-meadow-amhc2esk-pooler.c-5.us-east-1.aws.neon.tech/neondb?sslmode=require';
 
 const pool = new Pool({
     connectionString: connectionString,
     ssl: { rejectUnauthorized: false },
-    connectionTimeoutMillis: 10000, // Wait 10s for Neon to wake up
+    max: 10, // Maintain a small pool
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 10000, 
 });
 
-// 3. GET Route (Fetch Data)
+// Test DB Connection on startup
+pool.connect((err, client, release) => {
+    if (err) return console.error('Error acquiring client', err.stack);
+    console.log('✅ Connected to Neon Postgres');
+    release();
+});
+
+// 3. GET Route
 app.get('/api/:table', async (req, res) => {
     const tableName = req.params.table.toUpperCase();
     try {
-        // Double quotes handle the Uppercase table names in your SQL
         const result = await pool.query(`SELECT * FROM "${tableName}"`);
         res.json(result.rows);
     } catch (err) {
-        console.error(`Error fetching ${tableName}:`, err.message);
-        res.status(500).json({
-            error: err.message,
-            hint: `Make sure table "${tableName}" exists in your Neon SQL Editor.`
-        });
+        res.status(500).json({ error: err.message });
     }
 });
 
-// 4. POST Route (Add Data)
+// 4. POST Route
 app.post('/api/:table', async (req, res) => {
     const tableName = req.params.table.toUpperCase();
     const keys = Object.keys(req.body);
@@ -63,7 +66,5 @@ app.delete('/api/:table/:idColumn/:idValue', async (req, res) => {
     }
 });
 
-// Health Check
-app.get('/', (req, res) => res.send('BPIT University Management System API is LIVE!'));
-
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.get('/', (req, res) => res.send('API LIVE'));
+app.listen(PORT, () => console.log(`🚀 Server on port ${PORT}`));

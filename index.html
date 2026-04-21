@@ -8,7 +8,6 @@
       @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap");
 
       :root {
-        /* Default Dark Mode */
         --bg: #0b0f1a;
         --sidebar: #111827;
         --card: rgba(31, 41, 55, 0.7);
@@ -19,7 +18,6 @@
         --input-bg: rgba(0, 0, 0, 0.2);
       }
 
-      /* Light Mode Overrides */
       [data-theme="light"] {
         --bg: #f1f5f9;
         --sidebar: #ffffff;
@@ -37,11 +35,12 @@
         color: var(--text-primary);
         margin: 0;
         display: flex;
+        flex-direction: row;
         min-height: 100vh;
         transition: background-color 0.3s ease;
       }
 
-      /* Sidebar */
+      /* Responsive Sidebar Logic */
       .sidebar {
         width: 260px;
         background: var(--sidebar);
@@ -49,18 +48,60 @@
         position: fixed;
         padding: 40px 20px;
         border-right: 1px solid var(--border);
-        transition: background-color 0.3s ease;
+        transition: 0.3s;
+        z-index: 1000;
+        overflow-y: auto;
       }
 
+      .main {
+        margin-left: 300px; /* Space for desktop sidebar */
+        padding: 40px;
+        width: calc(100% - 300px);
+        transition: 0.3s;
+      }
+
+      /* --- MEDIA QUERIES FOR MOBILE --- */
+      @media (max-width: 992px) {
+        body {
+          flex-direction: column;
+        }
+        .sidebar {
+          width: 100%;
+          height: auto;
+          position: relative;
+          padding: 20px;
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+        }
+        .main {
+          margin-left: 0;
+          padding: 20px;
+          width: 100%;
+          box-sizing: border-box;
+        }
+        .nav-btn-container {
+          display: flex;
+          overflow-x: auto;
+          gap: 10px;
+          padding-bottom: 10px;
+        }
+        .nav-btn {
+          white-space: nowrap;
+          min-width: max-content;
+          margin-bottom: 0 !important;
+        }
+      }
+
+      /* Sidebar Elements */
       .nav-btn {
         display: block;
         width: 100%;
-        padding: 15px;
-        margin-bottom: 10px;
+        padding: 12px 15px;
+        margin-bottom: 8px;
         background: transparent;
         border: none;
         color: var(--text-secondary);
-        font-size: 18px;
+        font-size: 16px;
         font-weight: 600;
         text-align: left;
         cursor: pointer;
@@ -68,41 +109,32 @@
         transition: 0.3s;
       }
 
-      .nav-btn:hover,
-      .nav-btn.active {
+      .nav-btn:hover, .nav-btn.active {
         background: rgba(96, 165, 250, 0.1);
         color: var(--accent);
       }
 
-      /* Theme Toggle Button specific styling */
       #theme-toggle {
         border: 1px solid var(--accent);
-        font-size: 14px;
-        margin-bottom: 30px;
+        margin-bottom: 25px;
         text-align: center;
       }
 
-      /* Main Content */
-      .main {
-        margin-left: 300px;
-        padding: 50px;
-        width: calc(100% - 300px);
-      }
-
+      /* Main Content UI */
       .card {
         background: var(--card);
         backdrop-filter: blur(10px);
-        padding: 30px;
-        border-radius: 24px;
+        padding: 25px;
+        border-radius: 20px;
         border: 1px solid var(--border);
-        margin-bottom: 30px;
+        margin-bottom: 25px;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
       }
 
       .form-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 15px;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
       }
 
       input {
@@ -111,51 +143,45 @@
         color: var(--text-primary);
         padding: 12px;
         border-radius: 8px;
-        font-size: 16px;
+        font-size: 14px;
+        width: 100%;
+        box-sizing: border-box;
       }
 
       .btn-add {
         background: var(--accent);
-        color: white;
+        color: #fff;
         font-weight: 800;
         border: none;
         padding: 12px;
         border-radius: 8px;
         cursor: pointer;
-        transition: 0.2s;
       }
 
       /* Table Styles */
       .table-container {
         overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
       }
 
       table {
         width: 100%;
+        min-width: 600px; /* Ensures table doesn't squish too much */
         border-collapse: collapse;
-        margin-top: 20px;
       }
 
-      th {
+      th, td {
         text-align: left;
-        color: var(--text-secondary);
-        padding: 15px;
+        padding: 12px;
         border-bottom: 1px solid var(--border);
-        font-size: 0.75rem;
-        text-transform: uppercase;
-      }
-
-      td {
-        padding: 15px;
-        border-bottom: 1px solid var(--border);
-        font-size: 0.95rem;
+        font-size: 0.9rem;
       }
 
       .btn-del {
         color: #f43f5e;
         background: rgba(244, 63, 94, 0.1);
         border: none;
-        padding: 6px 12px;
+        padding: 5px 10px;
         border-radius: 6px;
         cursor: pointer;
         font-weight: 600;
@@ -164,22 +190,22 @@
   </head>
   <body>
     <nav class="sidebar">
-      <h2 style="margin-bottom: 10px; color: var(--accent)">BPIT Admin</h2>
+      <h2 style="margin-bottom: 15px; color: var(--accent)">BPIT Admin</h2>
       
-      <button id="theme-toggle" class="nav-btn">
-        🌙 Dark Mode
-      </button>
+      <button id="theme-toggle" class="nav-btn">🌙 Dark Mode</button>
 
-      <button class="nav-btn active" onclick="switchTab('STUDENTS', 'RollNo', event)">Students</button>
-      <button class="nav-btn" onclick="switchTab('FACULTY', 'FacultyID', event)">Faculty</button>
-      <button class="nav-btn" onclick="switchTab('COURSES', 'CourseNo', event)">Courses</button>
-      <button class="nav-btn" onclick="switchTab('DEPARTMENTS', 'DeptID', event)">Departments</button>
-      <button class="nav-btn" onclick="switchTab('COLLEGES', 'CollegeID', event)">Colleges</button>
+      <div class="nav-btn-container">
+        <button class="nav-btn active" onclick="switchTab('STUDENTS', 'RollNo', event)">Students</button>
+        <button class="nav-btn" onclick="switchTab('FACULTY', 'FacultyID', event)">Faculty</button>
+        <button class="nav-btn" onclick="switchTab('COURSES', 'CourseNo', event)">Courses</button>
+        <button class="nav-btn" onclick="switchTab('DEPARTMENTS', 'DeptID', event)">Departments</button>
+        <button class="nav-btn" onclick="switchTab('COLLEGES', 'CollegeID', event)">Colleges</button>
+      </div>
     </nav>
 
     <main class="main">
       <div class="card">
-        <h2 id="viewTitle">STUDENTS Management</h2>
+        <h2 id="viewTitle" style="margin-top:0">STUDENTS Management</h2>
         <form id="dataForm" class="form-grid"></form>
       </div>
 
@@ -198,7 +224,6 @@
       let activePK = "RollNo";
       const BASE_URL = "https://bpit-university-dbms.onrender.com/api";
 
-      // Theme Toggle Logic
       const themeToggle = document.getElementById('theme-toggle');
       themeToggle.addEventListener('click', () => {
         const isLight = document.documentElement.getAttribute('data-theme') === 'light';

@@ -8,12 +8,27 @@
       @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap");
 
       :root {
+        /* Default Dark Mode */
         --bg: #0b0f1a;
         --sidebar: #111827;
         --card: rgba(31, 41, 55, 0.7);
         --accent: #60a5fa;
         --text-primary: #f8fafc;
         --text-secondary: #94a3b8;
+        --border: rgba(255, 255, 255, 0.05);
+        --input-bg: rgba(0, 0, 0, 0.2);
+      }
+
+      /* Light Mode Overrides */
+      [data-theme="light"] {
+        --bg: #f1f5f9;
+        --sidebar: #ffffff;
+        --card: #ffffff;
+        --accent: #2563eb;
+        --text-primary: #1e293b;
+        --text-secondary: #64748b;
+        --border: rgba(0, 0, 0, 0.1);
+        --input-bg: #f8fafc;
       }
 
       body {
@@ -23,6 +38,7 @@
         margin: 0;
         display: flex;
         min-height: 100vh;
+        transition: background-color 0.3s ease;
       }
 
       /* Sidebar */
@@ -32,7 +48,8 @@
         height: 100vh;
         position: fixed;
         padding: 40px 20px;
-        border-right: 1px solid rgba(255, 255, 255, 0.05);
+        border-right: 1px solid var(--border);
+        transition: background-color 0.3s ease;
       }
 
       .nav-btn {
@@ -57,6 +74,14 @@
         color: var(--accent);
       }
 
+      /* Theme Toggle Button specific styling */
+      #theme-toggle {
+        border: 1px solid var(--accent);
+        font-size: 14px;
+        margin-bottom: 30px;
+        text-align: center;
+      }
+
       /* Main Content */
       .main {
         margin-left: 300px;
@@ -69,8 +94,9 @@
         backdrop-filter: blur(10px);
         padding: 30px;
         border-radius: 24px;
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border);
         margin-bottom: 30px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
       }
 
       .form-grid {
@@ -80,9 +106,9 @@
       }
 
       input {
-        background: rgba(0, 0, 0, 0.2);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        color: white;
+        background: var(--input-bg);
+        border: 1px solid var(--border);
+        color: var(--text-primary);
         padding: 12px;
         border-radius: 8px;
         font-size: 16px;
@@ -90,17 +116,13 @@
 
       .btn-add {
         background: var(--accent);
-        color: #000;
+        color: white;
         font-weight: 800;
         border: none;
         padding: 12px;
         border-radius: 8px;
         cursor: pointer;
         transition: 0.2s;
-      }
-
-      .btn-add:hover {
-        background: #93c5fd;
       }
 
       /* Table Styles */
@@ -118,15 +140,14 @@
         text-align: left;
         color: var(--text-secondary);
         padding: 15px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid var(--border);
         font-size: 0.75rem;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
       }
 
       td {
         padding: 15px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        border-bottom: 1px solid var(--border);
         font-size: 0.95rem;
       }
 
@@ -138,49 +159,22 @@
         border-radius: 6px;
         cursor: pointer;
         font-weight: 600;
-        transition: 0.2s;
-      }
-
-      .btn-del:hover {
-        background: rgba(244, 63, 94, 0.2);
-      }
-
-      .loading-text {
-        color: var(--accent);
-        font-style: italic;
       }
     </style>
   </head>
   <body>
     <nav class="sidebar">
-      <h2 style="margin-bottom: 40px; color: var(--accent)">BPIT Admin</h2>
-      <button
-        class="nav-btn active"
-        onclick="switchTab('STUDENTS', 'RollNo', event)"
-      >
-        Students
+      <h2 style="margin-bottom: 10px; color: var(--accent)">BPIT Admin</h2>
+      
+      <button id="theme-toggle" class="nav-btn">
+        🌙 Dark Mode
       </button>
-      <button
-        class="nav-btn"
-        onclick="switchTab('FACULTY', 'FacultyID', event)"
-      >
-        Faculty
-      </button>
-      <button class="nav-btn" onclick="switchTab('COURSES', 'CourseNo', event)">
-        Courses
-      </button>
-      <button
-        class="nav-btn"
-        onclick="switchTab('DEPARTMENTS', 'DeptID', event)"
-      >
-        Departments
-      </button>
-      <button
-        class="nav-btn"
-        onclick="switchTab('COLLEGES', 'CollegeID', event)"
-      >
-        Colleges
-      </button>
+
+      <button class="nav-btn active" onclick="switchTab('STUDENTS', 'RollNo', event)">Students</button>
+      <button class="nav-btn" onclick="switchTab('FACULTY', 'FacultyID', event)">Faculty</button>
+      <button class="nav-btn" onclick="switchTab('COURSES', 'CourseNo', event)">Courses</button>
+      <button class="nav-btn" onclick="switchTab('DEPARTMENTS', 'DeptID', event)">Departments</button>
+      <button class="nav-btn" onclick="switchTab('COLLEGES', 'CollegeID', event)">Colleges</button>
     </nav>
 
     <main class="main">
@@ -202,41 +196,37 @@
     <script>
       let activeTab = "STUDENTS";
       let activePK = "RollNo";
-
-      // LIVE BACKEND URL
       const BASE_URL = "https://bpit-university-dbms.onrender.com/api";
+
+      // Theme Toggle Logic
+      const themeToggle = document.getElementById('theme-toggle');
+      themeToggle.addEventListener('click', () => {
+        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+        document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
+        themeToggle.innerText = isLight ? '🌙 Dark Mode' : '☀️ Light Mode';
+      });
 
       const schema = {
         STUDENTS: ["RollNo", "Name", "Year", "Address", "Contact_No"],
-        FACULTY: [
-          "FacultyID",
-          "Name",
-          "Designation",
-          "Qualification",
-          "DeptID",
-        ],
+        FACULTY: ["FacultyID", "Name", "Designation", "Qualification", "DeptID"],
         COURSES: ["CourseNo", "Course_Title", "Year", "DeptID"],
         DEPARTMENTS: ["DeptID", "Dept_Name", "HOD_Name", "CollegeID"],
         COLLEGES: ["CollegeID", "Name", "Address", "Contact_No"],
       };
 
       function renderUI() {
-        // Render Form Inputs
         const form = document.getElementById("dataForm");
-        form.innerHTML =
-          schema[activeTab]
-            .map((f) => `<input id="${f}" placeholder="${f}" required>`)
-            .join("") +
+        form.innerHTML = schema[activeTab]
+          .map((f) => `<input id="${f}" placeholder="${f}" required>`)
+          .join("") +
           `<button type="submit" class="btn-add">Add Entry</button>`;
-
         loadData();
       }
 
       async function loadData() {
         const tb = document.getElementById("tbody");
         const th = document.getElementById("thead");
-        tb.innerHTML =
-          "<tr><td colspan='100%' class='loading-text'>Loading data from cloud...</td></tr>";
+        tb.innerHTML = "<tr><td colspan='100%'>Loading...</td></tr>";
 
         try {
           const res = await fetch(`${BASE_URL}/${activeTab}`);
@@ -245,76 +235,46 @@
           if (data && data.length > 0) {
             const cols = Object.keys(data[0]);
             th.innerHTML = `<tr>${cols.map((c) => `<th>${c}</th>`).join("")}<th>Action</th></tr>`;
-
-            tb.innerHTML = data
-              .map(
-                (row) => `
+            tb.innerHTML = data.map((row) => `
               <tr>
-                ${cols.map((c) => `<td>${row[c] !== null ? row[c] : ""}</td>`).join("")}
+                ${cols.map((c) => `<td>${row[c] || ""}</td>`).join("")}
                 <td><button class="btn-del" onclick="del('${row[activePK]}')">Delete</button></td>
               </tr>
-            `,
-              )
-              .join("");
+            `).join("");
           } else {
-            tb.innerHTML =
-              "<tr><td colspan='100%'>No records found in this table.</td></tr>";
+            tb.innerHTML = "<tr><td colspan='100%'>No records found.</td></tr>";
           }
         } catch (err) {
-          console.error("Fetch error:", err);
-          tb.innerHTML =
-            "<tr><td colspan='100%' style='color: #f43f5e'>Error connecting to server. Make sure Render is awake.</td></tr>";
+          tb.innerHTML = "<tr><td colspan='100%'>Error connecting to server.</td></tr>";
         }
       }
 
       document.getElementById("dataForm").onsubmit = async (e) => {
         e.preventDefault();
         const body = {};
-        schema[activeTab].forEach((f) => {
-          body[f] = document.getElementById(f).value;
+        schema[activeTab].forEach(f => body[f] = document.getElementById(f).value);
+
+        await fetch(`${BASE_URL}/${activeTab}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
         });
-
-        try {
-          const response = await fetch(`${BASE_URL}/${activeTab}`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body),
-          });
-
-          if (response.ok) {
-            e.target.reset();
-            loadData();
-          } else {
-            alert("Error adding entry. Check console for details.");
-          }
-        } catch (error) {
-          console.error("Post error:", error);
-        }
+        e.target.reset();
+        loadData();
       };
 
       async function del(id) {
-        if (confirm(`Delete record with ID: ${id}?`)) {
-          try {
-            await fetch(`${BASE_URL}/${activeTab}/${activePK}/${id}`, {
-              method: "DELETE",
-            });
-            loadData();
-          } catch (error) {
-            console.error("Delete error:", error);
-          }
+        if (confirm(`Delete ID: ${id}?`)) {
+          await fetch(`${BASE_URL}/${activeTab}/${activePK}/${id}`, { method: "DELETE" });
+          loadData();
         }
       }
 
       function switchTab(tab, pk, event) {
         activeTab = tab;
         activePK = pk;
-
-        // Update Sidebar Active State
-        document
-          .querySelectorAll(".nav-btn")
-          .forEach((b) => b.classList.remove("active"));
+        document.querySelectorAll(".nav-btn").forEach((b) => b.classList.remove("active"));
         event.currentTarget.classList.add("active");
-
         document.getElementById("viewTitle").innerText = tab + " Management";
         renderUI();
       }

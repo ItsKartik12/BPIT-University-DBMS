@@ -3,12 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BPIT Admin Elite | 2026 Edition</title>
+    <title>BPIT Admin Elite | 2026</title>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap");
 
       :root {
-        /* Dark Mode */
         --bg: radial-gradient(circle at 50% -20%, #1a2333 0%, #0b0f1a 70%);
         --sidebar: #0f172a;
         --card: rgba(30, 41, 59, 0.5);
@@ -22,7 +21,6 @@
       }
 
       [data-theme="light"] {
-        /* Vibrant Light Mode - No plane black! */
         --bg: #f8fafc;
         --sidebar: #ffffff;
         --card: #ffffff;
@@ -32,160 +30,31 @@
         --text-primary: #1e293b;
         --text-secondary: #64748b;
         --border: #e2e8f0;
-        --glass: none;
       }
 
-      /* --- ELITE ANIMATIONS --- */
-      @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(30px); filter: blur(10px); }
-        to { opacity: 1; transform: translateY(0); filter: blur(0); }
-      }
+      @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
 
-      @keyframes slideInRight {
-        from { opacity: 0; transform: translateX(-20px); }
-        to { opacity: 1; transform: translateX(0); }
-      }
-
-      @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-8px); }
-      }
-
-      body {
-        font-family: "Plus Jakarta Sans", sans-serif;
-        background: var(--bg);
-        color: var(--text-primary);
-        margin: 0;
-        display: flex;
-        min-height: 100vh;
-        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-
-      .sidebar {
-        width: 260px;
-        background: var(--sidebar);
-        height: 100vh;
-        position: fixed;
-        padding: 40px 20px;
-        border-right: 1px solid var(--border);
-        box-shadow: 10px 0 30px rgba(0,0,0,0.05);
-        z-index: 1000;
-        transition: background 0.4s ease;
-      }
-
-      .logo-text {
-        background: var(--accent);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-weight: 800;
-        font-size: 28px;
-        margin-bottom: 40px;
-        display: inline-block;
-        animation: float 4s ease-in-out infinite;
-      }
-
-      .main {
-        margin-left: 300px;
-        padding: 40px;
-        width: calc(100% - 300px);
-      }
-
-      .card {
-        background: var(--card);
-        backdrop-filter: var(--glass);
-        padding: 35px;
-        border-radius: 30px;
-        border: 1px solid var(--border);
-        margin-bottom: 30px;
-        box-shadow: 0 20px 40px -15px rgba(0,0,0,0.1);
-        animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-      }
-
-      h1 {
-        font-weight: 800;
-        margin-top: 0;
-        letter-spacing: -0.03em;
-        background: linear-gradient(to right, var(--text-primary), var(--text-secondary));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-
-      .nav-btn {
-        width: 100%;
-        padding: 16px;
-        margin-bottom: 12px;
-        background: transparent;
-        border: 1px solid transparent;
-        color: var(--text-secondary);
-        font-weight: 700;
-        border-radius: 16px;
-        cursor: pointer;
-        transition: 0.3s all;
-        text-align: left;
-      }
-
-      .nav-btn.active {
-        background: var(--accent);
-        color: white;
-        box-shadow: 0 12px 20px -5px rgba(79, 70, 229, 0.3);
-      }
-
-      .nav-btn:hover:not(.active) {
-        background: rgba(124, 58, 237, 0.08);
-        padding-left: 25px;
-        color: var(--accent-start);
-      }
-
-      input {
-        background: rgba(0, 0, 0, 0.05);
-        border: 2px solid var(--border);
-        color: var(--text-primary);
-        padding: 14px;
-        border-radius: 14px;
-        font-family: inherit;
-        font-weight: 600;
-        transition: 0.3s;
-        opacity: 0;
-        animation: slideInRight 0.5s ease forwards;
-      }
-
-      input:focus {
-        border-color: var(--accent-start);
-        outline: none;
-        background: rgba(0, 0, 0, 0.02);
-        box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1);
-      }
-
-      .btn-add {
-        background: var(--accent);
-        color: white;
-        font-weight: 800;
-        border: none;
-        border-radius: 14px;
-        padding: 14px;
-        cursor: pointer;
-        transition: 0.3s;
-      }
-
-      .btn-add:hover { transform: translateY(-3px); filter: brightness(1.1); }
-      .btn-add:active { transform: translateY(0); }
-
+      body { font-family: "Plus Jakarta Sans", sans-serif; background: var(--bg); color: var(--text-primary); margin: 0; display: flex; min-height: 100vh; transition: 0.4s; }
+      .sidebar { width: 260px; background: var(--sidebar); height: 100vh; position: fixed; padding: 40px 20px; border-right: 1px solid var(--border); z-index: 1000; }
+      .logo-text { background: var(--accent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; font-size: 26px; margin-bottom: 40px; display: inline-block; }
+      .main { margin-left: 300px; padding: 40px; width: calc(100% - 300px); }
+      .card { background: var(--card); backdrop-filter: var(--glass); padding: 30px; border-radius: 24px; border: 1px solid var(--border); margin-bottom: 30px; animation: fadeInUp 0.6s ease-out forwards; }
+      .nav-btn { width: 100%; padding: 15px; margin-bottom: 10px; background: transparent; border: none; color: var(--text-secondary); font-weight: 700; border-radius: 12px; cursor: pointer; text-align: left; transition: 0.3s; }
+      .nav-btn.active { background: var(--accent); color: white; box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.3); }
+      input { background: rgba(0, 0, 0, 0.05); border: 2px solid var(--border); color: var(--text-primary); padding: 12px; border-radius: 10px; font-family: inherit; font-weight: 600; animation: slideIn 0.4s ease forwards; }
+      .btn-add { background: var(--accent); color: white; font-weight: 800; border: none; border-radius: 10px; padding: 12px; cursor: pointer; }
       table { width: 100%; border-collapse: collapse; }
-      th { text-align: left; color: var(--text-secondary); font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; padding: 20px 15px; border-bottom: 2px solid var(--border); }
-      td { padding: 18px 15px; border-bottom: 1px solid var(--border); font-size: 14px; font-weight: 600; color: var(--text-primary); }
-
-      @media (max-width: 992px) {
-        .sidebar { position: relative; width: 100%; height: auto; padding: 20px; border-right: none; }
-        .main { margin-left: 0; width: 100%; box-sizing: border-box; padding: 20px; }
-        .nav-btn-container { display: flex; overflow-x: auto; gap: 10px; }
-        .nav-btn { min-width: 150px; }
-      }
+      th { text-align: left; color: var(--text-secondary); font-size: 11px; text-transform: uppercase; padding: 15px; border-bottom: 2px solid var(--border); }
+      td { padding: 15px; border-bottom: 1px solid var(--border); font-size: 14px; }
+      
+      @media (max-width: 992px) { .sidebar { position: relative; width: 100%; height: auto; padding: 20px; border-right: none; } .main { margin-left: 0; width: 100%; } .nav-btn-container { display: flex; overflow-x: auto; gap: 10px; } }
     </style>
   </head>
   <body>
     <nav class="sidebar">
       <div class="logo-text">BPIT Elite</div>
-      <button id="theme-toggle" class="nav-btn" style="text-align:center; border: 2px solid var(--border); margin-bottom: 30px;">🌙 Toggle Mode</button>
+      <button id="theme-toggle" class="nav-btn" style="text-align:center; border: 1px solid var(--border); margin-bottom: 20px;">🌙 Toggle Theme</button>
       <div class="nav-btn-container">
         <button class="nav-btn active" onclick="switchTab('STUDENTS', 'RollNo', event)">Students</button>
         <button class="nav-btn" onclick="switchTab('FACULTY', 'FacultyID', event)">Faculty</button>
@@ -197,16 +66,12 @@
 
     <main class="main">
       <div class="card">
-        <h1 id="viewTitle">STUDENTS Management</h1>
-        <form id="dataForm" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 18px;"></form>
+        <h1 id="viewTitle" style="margin-top:0">STUDENTS Management</h1>
+        <form id="dataForm" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;"></form>
       </div>
-
       <div class="card">
         <div style="overflow-x: auto;">
-          <table>
-            <thead id="thead"></thead>
-            <tbody id="tbody"></tbody>
-          </table>
+          <table><thead id="thead"></thead><tbody id="tbody"></tbody></table>
         </div>
       </div>
     </main>
@@ -216,21 +81,13 @@
       let activePK = "RollNo";
       const BASE_URL = "https://bpit-university-dbms.onrender.com/api";
 
-      // 1. Fixed Theme Logic
       const themeToggle = document.getElementById('theme-toggle');
-      themeToggle.addEventListener('click', () => {
+      themeToggle.onclick = () => {
         const doc = document.documentElement;
         const isLight = doc.getAttribute('data-theme') === 'light';
-        const nextTheme = isLight ? 'dark' : 'light';
-        doc.setAttribute('data-theme', nextTheme);
-        themeToggle.innerText = isLight ? '🌙 Toggle Mode' : '☀️ Toggle Mode';
-        localStorage.setItem('bpit-elite-theme', nextTheme);
-      });
-
-      // Load Theme on Init
-      const savedTheme = localStorage.getItem('bpit-elite-theme') || 'dark';
-      document.documentElement.setAttribute('data-theme', savedTheme);
-      themeToggle.innerText = savedTheme === 'light' ? '☀️ Toggle Mode' : '🌙 Toggle Mode';
+        doc.setAttribute('data-theme', isLight ? 'dark' : 'light');
+        themeToggle.innerText = isLight ? '🌙 Toggle Theme' : '☀️ Toggle Theme';
+      };
 
       const schema = {
         STUDENTS: ["RollNo", "Name", "Year", "Address", "Contact_No"],
@@ -240,77 +97,46 @@
         COLLEGES: ["CollegeID", "Name", "Address", "Contact_No"],
       };
 
-      // 2. Fixed UI Rendering (Triggers Input Animations)
-      function renderUI() {
-        const form = document.getElementById("dataForm");
-        form.innerHTML = schema[activeTab].map((f, i) => 
-          `<input id="${f}" placeholder="${f}" required style="animation-delay: ${0.1 * i}s">`
-        ).join("") + `<button type="submit" class="btn-add">Add Entry</button>`;
-        loadData();
-      }
-
-      // 3. Reliable Data Loading
       async function loadData() {
         const tb = document.getElementById("tbody");
         const th = document.getElementById("thead");
-        tb.innerHTML = "<tr><td colspan='100%' style='text-align:center; opacity:0.5;'>Connecting to Neon Cloud...</td></tr>";
-        
+        tb.innerHTML = "<tr><td colspan='100%'>Loading Cloud... (Neon may take 10s to wake up)</td></tr>";
         try {
           const res = await fetch(`${BASE_URL}/${activeTab}`);
-          if (!res.ok) throw new Error('Network Error');
           const data = await res.json();
-          
           if (data && data.length > 0) {
             const cols = Object.keys(data[0]);
             th.innerHTML = `<tr>${cols.map(c => `<th>${c}</th>`).join("")}<th></th></tr>`;
             tb.innerHTML = data.map(row => `<tr>${cols.map(c => `<td>${row[c] || ""}</td>`).join("")}
               <td><button style="color:#ef4444; border:none; background:none; cursor:pointer; font-weight:800;" onclick="del('${row[activePK]}')">Delete</button></td></tr>`).join("");
-          } else {
-            tb.innerHTML = "<tr><td colspan='100%' style='text-align:center;'>Table is currently empty.</td></tr>";
-          }
-        } catch (e) {
-          tb.innerHTML = "<tr><td colspan='100%' style='color:#ef4444; text-align:center;'>Offline. Check Render Server Logs.</td></tr>";
-        }
+          } else { tb.innerHTML = "<tr><td>Empty Table</td></tr>"; }
+        } catch (e) { tb.innerHTML = "<tr><td style='color:red'>Server Offline. Refresh in 10 seconds.</td></tr>"; }
       }
 
-      // 4. Form Submission with Feedback
+      function renderUI() {
+        const form = document.getElementById("dataForm");
+        form.innerHTML = schema[activeTab].map(f => `<input id="${f}" placeholder="${f}" required>`).join("") 
+                        + `<button type="submit" class="btn-add">Add Entry</button>`;
+        loadData();
+      }
+
       document.getElementById("dataForm").onsubmit = async (e) => {
         e.preventDefault();
-        const btn = e.target.querySelector('button');
-        btn.innerText = "Syncing...";
-        btn.disabled = true;
-
         const body = {};
         schema[activeTab].forEach(f => body[f] = document.getElementById(f).value);
-        
-        try {
-          await fetch(`${BASE_URL}/${activeTab}`, { 
-            method: "POST", 
-            headers: { "Content-Type": "application/json" }, 
-            body: JSON.stringify(body) 
-          });
-          e.target.reset();
-          loadData();
-        } catch (err) {
-          alert("Could not connect to database.");
-        } finally {
-          btn.innerText = "Add Entry";
-          btn.disabled = false;
-        }
+        await fetch(`${BASE_URL}/${activeTab}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+        e.target.reset(); loadData();
       };
 
-      // 5. Delete Logic
       async function del(id) {
-        if(confirm(`Confirm deletion of ${id}?`)) {
+        if(confirm("Delete?")) {
           await fetch(`${BASE_URL}/${activeTab}/${activePK}/${id}`, { method: "DELETE" });
           loadData();
         }
       }
 
-      // 6. Tab Switching Logic
       function switchTab(tab, pk, event) {
-        activeTab = tab; 
-        activePK = pk;
+        activeTab = tab; activePK = pk;
         document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
         event.currentTarget.classList.add("active");
         document.getElementById("viewTitle").innerText = tab + " Management";

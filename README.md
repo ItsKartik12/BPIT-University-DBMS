@@ -18,11 +18,24 @@ The system manages the following core entities as defined in the project documen
 6. [cite_start]**Progress Reports**: Academic performance tracking[cite: 103, 206].
 7. [cite_start]**Junction Tables**: `TEACHES` and `ENROLLED` tables to handle Many-to-Many relationships [cite: 104-107].
 
-## 🛠️ Tech Stack
-* **Frontend**: HTML5, CSS3 (Flexbox/Grid), JavaScript (Fetch API).
-* **Backend**: Node.js, Express.js.
-* **Database**: PostgreSQL.
-* **Version Control**: GitHub.
+🚀 BPIT University DBMS | Project Submission
+Student: Kartik Goyal (09320802724)
+
+Branch: CSE-B (Batch 2028)
+
+🔗 Project Links
+Live Dashboard: https://itskartik12.github.io/BPIT-University-DBMS/
+
+GitHub Repository: https://github.com/ItsKartik12/BPIT-University-DBMS
+
+🛠 Tech Stack & Features
+Frontend: Built with a premium Cyber-Dark UI featuring glassmorphism and real-time search.
+
+Backend: Node.js and Express.js handling dynamic API requests.
+
+Database: Relational SQL structure for managing Students, Faculty, and Courses.
+
+Functionality: Includes multi-tab navigation, instant ID/Name filtering, and complete CRUD operations.
 
 ## 📂 Project Documentation
 The complete design logic, including the **ER Diagram**, **Relational Schema Mapping**, and **Sample SQL Queries**, can be found in the attached project report:
